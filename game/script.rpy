@@ -1,5 +1,6 @@
 ﻿# The script of the game goes in this file.
-
+init:
+    $ config.keymap['dismiss'].remove('mouseup_1')
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
@@ -82,6 +83,8 @@ image nando_surprised = "TO CANTEEN - nando surprissed.jpg"
 image semua_orang_nengok = "TO CANTEEN - semua orang nengok ke arah yang diliat nando kecuali eka.jpg"
 image eka_balik_badan = "TO CANTEEN - eka balik badan.jpg"
 
+#gyrate screens
+
 # The game starts here.
 #Chapter 1
 label chapter1:
@@ -90,8 +93,8 @@ label chapter1:
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
 
-    scene eka_luar_kelas_normal
-
+    show screen eka_luar_kelas_normal_view with fade
+    show screen next_button
     # This shows a character sprite. A placeholder is used, but you can
     # replace it by adding a file named "eileen happy.png" to the images
     # directory.
@@ -108,13 +111,26 @@ label chapter1:
     eka_thinking_normal "…"
     eka_thinking_normal "sigh…"
 
-    scene eka_luar_kelas_tutupin_muka
+    hide screen eka_luar_kelas_normal_view
+    hide screen next_button
+
+    show screen eka_luar_kelas_tutupin_muka_view with fade
+    show screen next_button
     eka_thinking_normal "I hate transfering school… \n what if I don’t have \n friends…."
 
-    scene eka_buka_tas
+    hide screen eka_luar_kelas_tutupin_muka_view
+    hide screen next_button
+
+
+    show screen eka_buka_tas_view
+    show screen next_button
     eka_thinking_normal "…"
     eka_thinking_normal "wait..."
     eka_thinking_shaking "I didn't forget something, \n did I?!" with hpunch
+
+    hide screen eka_buka_tas_view
+    hide screen next_button
+
 
     scene eka_luar_kelas_normal
     eka_thinking_normal "Um- phone, my phone…"

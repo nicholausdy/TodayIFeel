@@ -9,7 +9,7 @@ init offset = -2
 ## Calling gui.init resets the styles to sensible default values, and sets the
 ## width and height of the game.
 init python:
-    gui.init(1080, 2160)
+    gui.init(1080, 1920)
 
 
 
@@ -85,11 +85,11 @@ define gui.title_text_size = 43
 ## Main and Game Menus #########################################################
 
 ## The images used for the main and game menus.
-define gui.main_menu_background = "gui/main_menu.png"
+define gui.main_menu_background = "gui/main_menu_bg.png"
 define gui.game_menu_background = "gui/game_menu.png"
 
 ## Chapter Selection ###########################################################
-define gui.chapter_selection_background = "gui/overlay/chapter_selection_resized.jpg"
+define gui.chapter_selection_background = "gui/overlay/chaps_select_bg.jpg"
 
 ## Dialogue ####################################################################
 ##
@@ -310,7 +310,7 @@ define gui.frame_tile = False
 ## The height of horizontal bars, scrollbars, and sliders. The width of vertical
 ## bars, scrollbars, and sliders.
 define gui.bar_size = 22
-define gui.scrollbar_size = 11
+define gui.scrollbar_size = 20 #scrollbar not shown
 define gui.slider_size = 22
 
 ## True if bar images should be tiled. False if they should be linearly scaled.

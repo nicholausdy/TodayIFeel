@@ -75,11 +75,51 @@ style frame:
     padding gui.frame_borders.padding
     background Frame("gui/frame.png", gui.frame_borders, tile=gui.frame_tile)
 
+################################################################################
+##Gyrate screens
+screen eka_luar_kelas_normal_view():
+    sensitive True
+    side "c b r":
+        area(0,0,1080,1920)
+        viewport id "vp_1":
+            draggable True
+            add "otw_introduksi_normal.jpg"
+        bar value XScrollValue("vp_1")
+        vbar value YScrollValue("vp_1")
+
+screen eka_luar_kelas_tutupin_muka_view():
+    sensitive True
+    side "c b r":
+        area(0,0,1080,1920)
+        viewport id "vp_1":
+            draggable True
+            add "otw_introduksi_tutupin_muka.jpg"
+        bar value XScrollValue("vp_1")
+        vbar value YScrollValue("vp_1")
+
+screen eka_buka_tas_view():
+    sensitive True
+    side "c b r":
+        area(0,0,1080,1920)
+        viewport id "vp_1":
+            draggable True
+            add "OTW INTRODUKSI - otw buka tas.jpg"
+        bar value XScrollValue("vp_1")
+        vbar value YScrollValue("vp_1")
 
 
 ################################################################################
 ## In-game screens
 ################################################################################
+## Next button screen ##########################################################
+screen next_button():
+    vbox:
+        imagebutton id "next_button":
+            idle "buttons/next_button.png"
+            #hover "hover_see_button"
+            xpos 500
+            ypos 1700
+            action Return()
 #image idle_see_button = "buttons/see button.png"
 image hover_see_button = "buttons/see button PRESSED.png"
 ## Choosing seat screen ########################################################
@@ -166,6 +206,7 @@ screen seated_down_interaction():
 ## https://www.renpy.org/doc/html/screen_special.html#say
 
 screen say(who, what):
+    sensitive True
     style_prefix "say"
     window:
         id "window"
@@ -429,13 +470,17 @@ style navigation_button:
 style navigation_button_text:
     properties gui.button_text_properties("navigation_button")
 
+style main_menu_text_style:
+    color "#ffffff"
+    hover_color "#66e0c1"
+    size 50
+
 
 ## Main Menu screen ############################################################
 ##
 ## Used to display the main menu when Ren'Py starts.
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
-
 screen main_menu():
 
     ## This ensures that any other menu screen is replaced.
@@ -462,39 +507,145 @@ screen main_menu():
             text "[config.version]":
                 style "main_menu_version"
 
-    button id "continue_button":
-        xalign 0.4
-        yalign 0.73
-        xsize 600
-        ysize 150
-        action Start("chapter1")
+    add "gui/overlay/main_menu_title.png" xalign 0.5 yalign 0.45
 
-    button id "start_button":
-        xalign 0.3
-        yalign 0.85
-        xsize 600
-        ysize 150
-        action ToggleScreen("chapter_selection")
+    vbox xalign 0.5 yalign 0.7:
+        imagebutton id "load_game_button":
+            idle "gui/overlay/main_menu_button.png"
+            xpos 0
+            ypos 240
+            xsize 600
+            ysize 150
+            action ToggleScreen("chapter_selection")
+        textbutton "LOAD GAME":
+            xpos 160
+            ypos 140
+            text_style "main_menu_text_style"
+            #add this action line to make the button responsive to hover action
+            action ToggleScreen("chapter_selection")
+
+        imagebutton id "new_game_button":
+            idle "gui/overlay/main_menu_button.png"
+            xpos 0
+            ypos 250
+            xsize 600
+            ysize 150
+            action Start("chapter1")
+        textbutton "NEW GAME" :
+            xpos 160
+            ypos 150
+            text_style "main_menu_text_style"
+            #add this action line to make the button responsive to hover action
+            action Start("chapter1")
+
+
+style chapter_box_day:
+    color "#000000"
+    size 30
+    bold True
+    xpos 170
+    ypos 30
+
+style chapter_box_title:
+    color "#808080"
+    size 60
+    xpos 150
+    ypos 130
 
 #chapter selection screen
 screen chapter_selection():
     tag menu
 
-    add gui.chapter_selection_background
+    add "gui/overlay/chap_select_header.png"
+    add "gui/overlay/chap_select_bg.png" ypos 217
+    side "c r":
+        area (0,235,1080,1680)
+        viewport id "vp_chap_select":
+            draggable True
+            mousewheel True
+            vbox :
+                spacing 50
+                fixed:
+                    xmaximum 914
+                    ymaximum 338
+                    text "MONDAY, JANUARY 6" style "chapter_box_day"
+                    text "NEW KID AT SCHOOL" style "chapter_box_title"
+                    imagebutton id "chapter1_select_box":
+                        xpos 80
+                        idle "gui/overlay/chap_select_box.png"
+                        hover "gui/overlay/chap_select_box_pressed.png"
+                        action Start("chapter1")
+
+                fixed:
+                    xmaximum 914
+                    ymaximum 338
+                    text "TUESDAY, JANUARY 7" style "chapter_box_day"
+                    text "ABOUT ADAPTING" style "chapter_box_title"
+                    imagebutton :
+                        xpos 80
+                        idle "gui/overlay/chap_select_box.png"
+                        hover "gui/overlay/chap_select_box_pressed.png"
+                        action NullAction()
+
+                fixed:
+                    xmaximum 914
+                    ymaximum 338
+                    text "WEDNESDAY, JANUARY 15" style "chapter_box_day"
+                    text "CAN I SURVIVE..." style "chapter_box_title"
+                    imagebutton :
+                        xpos 80
+                        idle "gui/overlay/chap_select_box.png"
+                        hover "gui/overlay/chap_select_box_pressed.png"
+                        action NullAction()
+
+                imagebutton:
+                    xpos 80
+                    idle "gui/overlay/chap_select_locked.png"
+                    #hover "gui/overlay/chap_select_box_pressed.png"
+                    action NullAction()
+                imagebutton :
+                    xpos 80
+                    idle "gui/overlay/chap_select_locked.png"
+                    #hover "gui/overlay/chap_select_box_pressed.png"
+                    action NullAction()
+                imagebutton :
+                    xpos 80
+                    idle "gui/overlay/chap_select_locked.png"
+                    #hover "gui/overlay/chap_select_box_pressed.png"
+                    action NullAction()
+                imagebutton :
+                    xpos 80
+                    idle "gui/overlay/chap_select_locked.png"
+                    #hover "gui/overlay/chap_select_box_pressed.png"
+                    action NullAction()
+                imagebutton :
+                    xpos 80
+                    idle "gui/overlay/chap_select_locked.png"
+                    #hover "gui/overlay/chap_select_box_pressed.png"
+                    action NullAction()
+        vbar value YScrollValue("vp_chap_select")
+
+    add "gui/overlay/texture_overlay.png"
 
     button id "back_to_main_menu" :
-        xalign 0.3
-        yalign 0.15
-        xsize 300
-        ysize 220
+        xpos 20
+        ypos 70
+        xsize 140
+        ysize 100
+        action ToggleScreen("main_menu")
+    imagebutton id "back_to_main_menu_button" :
+        idle  "gui/overlay/chaps_select_back.png"
+        xpos 150
+        ypos 120
         action ToggleScreen("main_menu")
 
-    button id "start_chapter_1":
-        xalign 0.5
-        yalign 0.35
-        xsize 600
-        ysize 150
-        action Start("chapter1")
+
+    #button id "start_chapter_1":
+    #    xalign 0.5
+    #    yalign 0.35
+    #    xsize 600
+    #    ysize 150
+    #    action Start("chapter1")
 
 
 #template default
@@ -508,8 +659,8 @@ style main_menu_version is main_menu_text
 style main_menu_frame:
     xsize 237
     yfill True
-
-    background "gui/overlay/1_main_menu_resized.jpg"
+    #edit here to change main menu background image
+    background "gui/overlay/main_menu_bg.png"
 
 style main_menu_vbox:
     xalign 1.0
