@@ -1,44 +1,73 @@
 ﻿# The script of the game goes in this file.
-init:
-    $ config.keymap['dismiss'].remove('mouseup_1')
+
+#define effect and transitions
+define persistent.dialogueBoxOpacity = 0.75 #opacity of dialogue box
+define dissolve = Dissolve(0.2) #transition between similar scenes
+define fade_to_black = Fade(0.5,1.5,0.5) #transition between distinct scenes
+
+
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
-
-define eka_thinking_normal = Character("Eka",window_xpos= 700, window_ypos = 950, window_background="eka_thinking_normal.png",who_xpos = -100, who_ypos = 80, who_color="#38379d",what_xpos=110, what_ypos = 150)
-define eka_thinking_shaking = Character(kind=eka_thinking_normal, window_background="eka_thinking_shaking.png")
-define eka_talking_normal = Character(kind=eka_thinking_normal, window_background="eka_talking_normal.png")
-define eka_talking_shaking = Character(kind=eka_talking_normal, window_backgrounf="eka_talking_shaking.png")
-define budi = Character("Mr. Budi", window_xpos= 850, window_ypos = 900, window_background="talking_normal_flipped.png",who_xpos = -100, who_ypos = 80, who_color="#717171",what_xpos=110, what_ypos = 150, what_color="#717171")
+define placeholder = Character("",window_background="eka_talking_normal.png", window_xpos=2000, window_ypos=2000)
+define eka_thinking_normal = Character("Eka",window_xpos= 650, window_ypos = 1500, window_background= Transform("eka_thinking_normal.png", alpha=persistent.dialogueBoxOpacity), who_xpos = -60, who_ypos = 160, who_color="#38379d",what_xpos=150, what_ypos = 230)
+define eka_thinking_shaking = Character(kind=eka_thinking_normal, window_background=Transform("eka_thinking_shaking.png", alpha=persistent.dialogueBoxOpacity))
+define eka_talking_normal = Character(kind=eka_thinking_normal, window_xpos= 650, window_ypos = 650, window_background=Transform("eka_talking_normal.png",alpha=persistent.dialogueBoxOpacity), who_xpos = -60, who_ypos = 150, what_xpos=150, what_ypos = 230)
+define eka_talking_normal_intro_kelas = Character(kind=eka_talking_normal, window_xpos = 650, window_ypos = 1500)
+define eka_talking_budi_intro_kelas = Character(kind=eka_talking_normal, window_xpos = 800, window_ypos = 200)
+define eka_talking_nerd = Character(kind=eka_talking_normal_intro_kelas, window_background=Transform("eka_talking_normal_flipped.png", alpha=persistent.dialogueBoxOpacity))
+define eka_talking_bully = Character(kind=eka_talking_normal_intro_kelas)
+define eka_talking_simon = Character(kind=eka_talking_normal_intro_kelas)
+define eka_talking_seated_down = Character(kind=eka_talking_nerd)
+define eka_talking_shaking = Character(kind=eka_talking_normal, window_background=Transform("eka_talking_shaking.png",alpha=persistent.dialogueBoxOpacity))
+define budi = Character("Mr. Budi", window_xpos= 750, window_ypos = 300, window_background=Transform("talking_normal_flipped.png",alpha=persistent.dialogueBoxOpacity),who_xpos = -60, who_ypos = 150, who_color="#717171",what_xpos=150, what_ypos = 230, what_color="#000000")
+define budi_depan_papan_tulis = Character(kind=budi, window_xpos = 500, window_ypos = 150)
 define budi_blur = Character(kind=budi, window_ypos = 300)
-define kelas = Character("Class", window_xpos = 600, window_ypos = 250, window_background="talking_normal.png",who_xpos = -100, who_ypos = 80, who_color="#717171",what_xpos=110, what_ypos = 150, what_color="#717171")
+define kelas = Character("Class", window_xpos= 650, window_ypos = 200, window_background=Transform("class talking in unison.png",alpha=persistent.dialogueBoxOpacity),who_xpos = -60, who_ypos = 150, who_color="#717171",what_xpos=150, what_ypos = 230, what_color="#000000")
 define kelas1 = Character(kind=kelas, window_xpos = 1100, window_ypos = 200)
 define kelas2 = Character(kind=kelas, window_xpos = 1150, window_ypos = 800)
 define kelas3 = Character(kind=kelas, window_xpos = 650, window_ypos = 600)
-define nerd = Character("???", window_xpos = 550, window_ypos = 900, window_background="talking_normal_flipped.png", who_xpos = -100, who_ypos = 80, who_color="#717171",what_xpos=110, what_ypos = 150, what_color="#717171")
-define bully = Character(kind=nerd, window_ypos = 600)
+define nerd = Character("???", window_xpos = 530, window_ypos = 200, window_background=Transform("talking_normal_flipped.png",alpha=persistent.dialogueBoxOpacity), who_xpos = -60, who_ypos = 150, who_color="#717171", what_xpos=150, what_ypos = 230, what_color="#000000")
+define bully = Character(kind=nerd, window_ypos = 150, who_xpos = -60, who_ypos = 150, what_xpos=150, what_ypos = 230 )
 define budi_blur = Character(kind=budi, window_ypos = 300)
-define simon_unknown = Character("???", window_xpos = 1000, window_ypos = 500, window_background="talking_normal.png", who_xpos = -100, who_ypos = 80, who_color = "#c43730", what_xpos=110, what_ypos = 150, what_color="#c43730")
+define simon_unknown = Character("???", window_xpos = 850, window_ypos = 200, window_background=Transform("talking_normal.png",alpha=persistent.dialogueBoxOpacity), who_xpos = -60, who_ypos = 150, who_color = "#c43730",what_xpos=150, what_ypos = 230, what_color="#000000")
 define simon = Character("Simon", kind=simon_unknown)
-define simon_andrea_nando = Character("Simon", kind=simon_unknown, window_xpos = 1000, window_ypos = 600 ,window_background="talking_normal_flipped.png")
-define andrea_unknown = Character("???(a)", window_xpos = 1100, window_ypos = 500, window_background="talking_normal.png", who_xpos = -100, who_ypos = 80, who_color = "#e44fca", what_xpos=110, what_ypos = 150, what_color="#e44fca")
+define simon_not_seen = Character("Simon", kind=simon, window_xpos=550, window_ypos= 700)
+define simon_andrea_nando = Character("Simon", kind=simon_unknown, window_xpos = 800, window_ypos = 1300 ,window_background=Transform("talking_normal_rotate.png",alpha=persistent.dialogueBoxOpacity))
+define andrea_unknown = Character("???", window_xpos = 850, window_ypos = 150, window_background=Transform("talking_normal.png",alpha=persistent.dialogueBoxOpacity), who_xpos = -60, who_ypos = 150, who_color = "#e44fca", what_xpos=150, what_ypos = 230, what_color="#000000")
 define andrea = Character("Andrea", kind=andrea_unknown)
-define nando_unknown = Character("???(n)", window_xpos = 600, window_ypos = 500, window_background = "talking_normal.png", who_xpos = -100, who_ypos = 80, who_color = "#40a03f", what_xpos=110, what_ypos = 150, what_color="#40a03f")
+define nando_unknown = Character("???", window_xpos = 600, window_ypos = 200, window_background =Transform("talking_normal.png",alpha=persistent.dialogueBoxOpacity), who_xpos = -60, who_ypos = 150, who_color = "#40a03f", what_xpos=150, what_ypos = 230, what_color="#000000")
 define nando = Character("Nando", kind=nando_unknown)
-define simon_canteen = Character("Simon", kind=simon_unknown, window_background = "talking_normal.png")
-define nando_canteen = Character("Nando", kind=nando_unknown, window_background = "talking_normal_flipped.png")
+define eka_andrea_nando = Character(kind=eka_talking_normal, window_xpos=800, window_ypos = 1400, window_background = Transform("eka_talking_normal_rotate.png", alpha=persistent.dialogueBoxOpacity))
+define eka_canteen = Character(kind=eka_andrea_nando)
+define simon_canteen = Character("Simon", window_xpos = 600, window_ypos = 1350, kind=simon_unknown, window_background = Transform("talking_normal_rotate.png",alpha=persistent.dialogueBoxOpacity))
+define nando_canteen = Character("Nando", kind=nando_unknown, window_ypos = 500, window_xpos=650, window_background = Transform("talking_normal.png",alpha=persistent.dialogueBoxOpacity))
+define andrea_canteen = Character(kind=andrea, window_ypos= 550)
+define eka_thinking_normal_room = Character(kind=eka_thinking_normal, window_background=Transform("eka_thinking_normal_small.png", alpha=persistent.dialogueBoxOpacity),window_xpos= 600, window_ypos = 1300, who_xpos = -110, what_xpos=100)
+define eka_talking_normal_room = Character(kind=eka_talking_normal, window_xpos =600, window_ypos= 1000, window_background = Transform("eka_talking_normal_flipped.png",alpha=persistent.dialogueBoxOpacity))
 
+#chapter variables
+default is_chapter1_played = False
 #define variables
 default point = 0
 default simon_second = False
 default whiteboard_interaction_point = 0
+default is_choose_seat_showed_1st_time = False #flag to control whether choose seat has been showed / not
 default is_convo_simon_seated_down = False
 default is_nerd_interacted = False
+default is_bully_interacted = False
 default is_bag_interacted = False
+
+#phone variables
+default is_door_interacted_day_1 = False
+default is_dailynote_interacted_day_1 = False
+default is_chatnow_interacted_day_1 = False
+default is_todolist_interacted_day_1 = False
+default is_browser_interacted_day_1 = False
 
 #define images
 #Chapter 1 scenes
 image eka_luar_kelas_normal = "otw_introduksi_normal.jpg"
-image eka_luar_kelas_tutupin_muka = "otw_introduksi_tutupin_muka.jpg"
+image eka_luar_kelas_tutupin_muka = "OTW INTRODUKSI - nutupin muka di tas.jpg"
 image eka_buka_tas = "OTW INTRODUKSI - otw buka tas.jpg"
 image eka_ngeluarin_hp = "OTW INTRODUKSI - NGELUARIN HP.jpg"
 image hand_into_bag = "OTW INTRODUKSI - HAND INTO BAG.jpg"
@@ -62,6 +91,7 @@ image muka_bully_makin_melototin = "CHOOSING SEAT - BULLY - BULLY MAKIN MELOTOTI
 image simon_ngeliatin = "CHOOSING SEAT - SIMON - SIMON ngeliatin.jpg"
 image choosing_seat_simon_senyum = "CHOOSING SEAT - SIMON - SIMON senyum.jpg"
 image simon_pura2_sedih = "CHOOSING SEAT - SIMON - SIMON pura2 sedih.jpg"
+image seated_down_hand_into_bag = "SEATED DOWN - hand into bag.jpg"
 image simon_nyengir = "CHOOSING SEAT - SIMON - SIMON nyengir.jpg"
 image guru_beres_buku ="SEATED DOWN - guru di depan lagi beres2 buku.jpg"
 image simon_normal = "SEATED DOWN - SIMON - NORMAL.jpg"
@@ -82,19 +112,39 @@ image andrea_duduk = "TO CANTEEN - andrea duduk bawa mi ayam juge.jpg"
 image nando_surprised = "TO CANTEEN - nando surprissed.jpg"
 image semua_orang_nengok = "TO CANTEEN - semua orang nengok ke arah yang diliat nando kecuali eka.jpg"
 image eka_balik_badan = "TO CANTEEN - eka balik badan.jpg"
+image eka_guling = "EKAS ROOM - eka guling2 di kasur, mukaknya ditempelin di bantal.jpg"
+image eka_kasur_megang_hp = "EKAS ROOM - eka tiduran di kasur, megang hp.jpg"
+image eka_hp = "EKAS ROOM - eka ngangkat kepalanya, hp di tangan.jpg"
+image eka_deket_dispenser = "EKAS ROOM - grab water - deket dispenser.jpg"
+image eka_minum_air = "EKAS ROOM - grab water - minum aer.jpg"
+image eka_taro_gelas = "EKAS ROOM - grab water - gelas kosong ditaro.jpg"
+image eka_depan_kaca = "EKAS ROOM - WASH FACE - depan kaca 1.jpg"
+image eka_splashing_face = "EKAS ROOM - WASH FACE - splashing face with water.jpg"
+image eka_depan_kaca_2 = "EKAS ROOM - WASH FACE - depan kaca 2.jpg"
+image light_switch_on = "EKAS ROOM - LIGHT SWITCH on.jpg"
+image light_switch_off = "EKAS ROOM - LIGHT SWITCH off.jpg"
+image eka_sleep = "EKAS ROOM - lights off, ada lampu tumblr nyala.jpg"
 
 #gyrate screens
+label transition:
+    $ renpy.movie_cutscene('video/SPLASH_SCREEN_ZOOMING.webm')
 
+label main_menu_sc:
+    show screen main_menu_select
+    placeholder "Published@2020"
 # The game starts here.
 #Chapter 1
 label chapter1:
-
     # Show a background. This uses a placeholder by default, but you can
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
-
-    show screen eka_luar_kelas_normal_view with fade
-    show screen next_button
+    hide screen main_menu_select
+    hide screen chapter_selection
+    $ renpy.movie_cutscene('video/splash-chap-6-JANUARY-1_1.webm')
+    show screen chapter1_splash
+    placeholder "hmmm"
+    hide screen chapter1_splash
+    scene eka_luar_kelas_normal with dissolve
     # This shows a character sprite. A placeholder is used, but you can
     # replace it by adding a file named "eileen happy.png" to the images
     # directory.
@@ -107,59 +157,46 @@ label chapter1:
     eka_thinking_normal "ah, is it too stiff…?"
     eka_thinking_normal "hey guys!"
     eka_thinking_normal "Ah, do I sound too excited?"
-    eka_thinking_normal "Ugh, how do people even \n introduce themselves \n for the first time…"
+    eka_thinking_normal "Ugh, how do people even introduce themselves for \nthe first time…"
     eka_thinking_normal "…"
     eka_thinking_normal "sigh…"
 
-    hide screen eka_luar_kelas_normal_view
-    hide screen next_button
+    scene eka_luar_kelas_tutupin_muka with dissolve
+    eka_thinking_normal "I hate transfering school… \nwhat if I don’t have friends…."
 
-    show screen eka_luar_kelas_tutupin_muka_view with fade
-    show screen next_button
-    eka_thinking_normal "I hate transfering school… \n what if I don’t have \n friends…."
-
-    hide screen eka_luar_kelas_tutupin_muka_view
-    hide screen next_button
-
-
-    show screen eka_buka_tas_view
-    show screen next_button
+    scene eka_buka_tas with dissolve
     eka_thinking_normal "…"
     eka_thinking_normal "wait..."
-    eka_thinking_shaking "I didn't forget something, \n did I?!" with hpunch
+    eka_thinking_shaking "I didn't forget something, \ndid I?!" with hpunch
 
-    hide screen eka_buka_tas_view
-    hide screen next_button
-
-
-    scene eka_luar_kelas_normal
+    scene eka_luar_kelas_normal with dissolve
     eka_thinking_normal "Um- phone, my phone…"
 
-    scene hand_into_bag
+    scene hand_into_bag with fade_to_black
     eka_thinking_normal "where is it…"
 
-    scene eka_ngeluarin_hp
+    scene eka_ngeluarin_hp with dissolve
     eka_thinking_normal "Ah! Thank god!"
     eka_thinking_normal "…"
 
-    scene hand_into_bag
-    eka_thinking_shaking "Please, please tell me \n I put my wallet inside \n my bag and not at home…" with hpunch
-    eka_thinking_shaking "oh my god, where is it" with hpunch
+    scene hand_into_bag with dissolve
+    eka_thinking_shaking "Please, please tell me I \nput my wallet inside my \nbag and not at home…" with hpunch
+    eka_thinking_shaking "oh my god, where is it!?" with hpunch
     eka_thinking_shaking "!!!" with hpunch
 
-    scene ngeluarin_dompet
+    scene ngeluarin_dompet with dissolve
     eka_thinking_normal "THANK GOD."
-    budi "Eka? What are you doing \n outside?"
+    budi "Eka? What are you doing \noutside?"
     eka_thinking_normal "!!!"
 
-    scene mr_budi_looking_at_player
+    scene mr_budi_looking_at_player with fade_to_black
     eka_talking_normal "O-oh! Um-"
     eka_talking_normal "I- sorry, sir, I was just…"
     eka_thinking_normal "…anxious, I'm anxious…"
-    eka_thinking_normal "I'm not prepared to face \n new peers…"
+    eka_thinking_normal "I'm not prepared to face new peers…"
     eka_talking_normal "…"
 
-    scene mr_budi_smiles
+    scene mr_budi_smiles with dissolve
     budi "It's okay."
     budi "Come, let's go inside."
     eka_talking_normal "um… okay, sir."
@@ -167,145 +204,160 @@ label chapter1:
     scene black
     #insert audio
 
-    scene full_fokus_kelas
+    scene full_fokus_kelas with fade_to_black
     eka_thinking_normal "…"
     eka_thinking_shaking "..." with hpunch
     eka_thinking_shaking "…they're all looking at me…" with hpunch
     eka_thinking_shaking "am I…" with hpunch
     eka_thinking_shaking "do I… look weird?" with hpunch
     eka_thinking_shaking "why is it so quiet…" with hpunch
+    jump walk_interface
 
-    menu:
-        "(walk) Stand in front of class":
-            pass
+label walk_interface:
+    show screen walk_button
+    placeholder "hmmm"
+    jump walk_interface
 
-    scene tangan_garuk2
+label after_walk:
+    hide screen walk_button
+    scene tangan_garuk2 with dissolve
     budi "Good morning class!"
-    budi "It's a new term, surely \n your break was fun?"
-    kelas "We want more! \n We want more!"
+    budi "It's a new term, surely your \nbreak was fun?"
+    kelas "We want more! We want \nmore!"
     budi "hahaha, what a lively class."
-    budi_blur "{alpha=-0.7} where's your new year \n spirit? New year new me! {=blur_text}" (multiple=2)
-    eka_thinking_shaking "worm… how will I introduce \n myself…" (multiple=2) with hpunch
-    budi_blur "{alpha=-0.7} where's your new year \n spirit? New year new me! {=blur_text}" (multiple=2)
-    eka_thinking_shaking "hello, guys?" (multiple=2) with hpunch
-    budi_blur "{alpha=-0.7} where's your new year \n spirit? New year new me! {=blur_text}" (multiple=2)
-    eka_thinking_shaking "hey, nice to meet yall?" (multiple=2) with hpunch
-    budi_blur "{alpha=-0.7} where's your new year \n spirit? New year new me! {=blur_text}" (multiple=2)
-    eka_thinking_shaking "good morning?" (multiple=2) with hpunch
+    budi_blur "where's your new year spirit? \nNew year new me!"
+    show screen tangan_garuk2_shaking
+    eka_thinking_shaking "worm… how will I introduce myself…" with hpunch
+    eka_thinking_shaking "hello, guys?" with hpunch
+    eka_thinking_shaking "hey, nice to meet yall?" with hpunch
+    eka_thinking_shaking "good morning?" with hpunch
 
-    scene clenching_hands
+    hide screen tangan_garuk2_shaking
+    show screen clenching_hand
     eka_thinking_shaking "im not ready at all-" with hpunch
-    budi "Okay! Enough chit-chat! \n Today we have a new \n addition to this class!"
+    hide screen clenching_hand
+    scene clenching_hands with dissolve
+    budi "Okay! Enough chit-chat! \nToday we have a new addition \nto this class!"
+    show screen clenching_hand
     eka_thinking_shaking "Oh. My. God." with hpunch
 
-    scene looking_at_mr_budi
-    budi "Go ahead now, Eka. \n Introduce yourself!"
+    hide screen clenching_hand
+    scene looking_at_mr_budi with dissolve
+    budi "Go ahead now, Eka. Introduce yourself!"
     eka_thinking_normal "I'm going to die."
 
     menu:
         "Deep Breath":
             $ point += 5
-            call .deep_breath
+            call .deep_breath from _call_after_walk_deep_breath
         "Introduce":
-            call .introduce
+            call .introduce from _call_after_walk_introduce
 
-    scene 1st_person_depan_kelas
-    eka_thinking_normal "...there are several empty \n seats tho"
+    scene 1st_person_depan_kelas with fade_to_black
+    eka_thinking_normal "...there are several empty \nseats tho"
 
     jump chapter1_choosing_seat
 label .deep_breath:
-    scene 1st_person_depan_kelas
-    eka_thinking_normal "It's okay, Eka… you can do \n this…"
-    eka_thinking_normal "It's only a simple \n introduction..."
+    scene 1st_person_depan_kelas with fade_to_black
+    eka_thinking_normal "It's okay, Eka… you can do \nthis…"
+    eka_thinking_normal "It's only a simple introduction..."
     eka_thinking_normal "you can do this…!"
-    eka_talking_normal "Uh- hello! My name's Eka, \n I'm a transfer student \n from St. Bernadicus \n High School."
-    eka_talking_normal "Uhhh-"
-    eka_talking_normal "Nice to meet you all!"
-    eka_talking_normal "Nice to meet you all!" (multiple=5)
-    kelas "they're cute…" (multiple=5)
-    kelas1 "hehe" (multiple=5)
-    kelas2 "nice to meet you too!" (multiple=5)
-    kelas3 "hi!" (multiple=5)
+    eka_talking_normal_intro_kelas "Uh- hello! My name's Eka, I'm a transfer student from St. Bernadicus High School."
+    eka_talking_normal_intro_kelas "Uhhh-"
+    eka_talking_normal_intro_kelas "Nice to meet you all!"
+    eka_talking_normal_intro_kelas "Nice to meet you all!" (multiple=5)
+    kelas "they're cute…"
+    kelas "hehe"
+    kelas "nice to meet you too!"
+    kelas "hi!"
     eka_thinking_shaking "OH MY GOD I DID IT." with hpunch
 
-    scene looking_at_mr_budi_hes_smiling
-    budi "Well done! Now you may \n sit."
-    budi "Feel free to choose your \n own seat."
+    scene looking_at_mr_budi_hes_smiling with fade_to_black
+    budi "Well done! Now you may sit."
+    budi "Feel free to choose your own \nseat."
 
     return
 label .introduce:
-    scene 1st_person_depan_kelas
-    eka_talking_normal "He-"
+    scene 1st_person_depan_kelas with fade_to_black
+    eka_talking_normal_intro_kelas "He-"
     eka_thinking_normal "...everyone is staring-"
-    eka_thinking_shaking "I want to make a great \n first impression-" with hpunch
+    eka_thinking_shaking "I want to make a great first impression-" with hpunch
     eka_thinking_shaking "but-" with hpunch
-    eka_thinking_shaking "should I really say hello? \n Is it too formal? \n Should I say good morning \n instead?" with hpunch
-    eka_thinking_shaking "do I look stupid? \n Why is everyone staring \n at me like that…" with hpunch
-    eka_talking_normal "…"
-    eka_talking_normal "…" (multiple=2)
+    eka_thinking_shaking "should I really say hello? \nIs it too formal? Should I say \ngood morning instead?" with hpunch
+    eka_thinking_shaking "do I look stupid? Why is \neveryone staring at me \nlike that…" with hpunch
+    eka_talking_normal_intro_kelas "…"
+    eka_talking_normal_intro_kelas "…" (multiple=2)
     kelas "…" (multiple=2)
     budi "…"
 
-    scene looking_at_mr_budi
-    budi "Well! So class, here's Eka, \n they're the new transfer \n student from St. \n  Bernadicus High School!"
-    eka_talking_normal "…!"
+    scene looking_at_mr_budi with fade_to_black
+    budi "Well! So class, here's Eka, \nthey're the new transfer \nstudent from St. Bernadicus \nHigh School!"
+    eka_talking_budi_intro_kelas "…!"
 
-    scene looking_at_mr_budi_hes_smiling
-    budi "You just moved here with \n your family, right?"
-    eka_talking_normal "um… yes, sir…"
-    budi "Great! Now that you've \n introduced yourself, feel \n free to choose a seat!"
-    eka_talking_normal "uh… okay…"
+    scene looking_at_mr_budi_hes_smiling with dissolve
+    budi "You just moved here with your family, right?"
+    eka_talking_budi_intro_kelas "um… yes, sir…"
+    budi "Great! Now that you've \nintroduced yourself, feel free \nto choose a seat!"
+    eka_talking_budi_intro_kelas "uh… okay…"
     eka_thinking_normal "ah… I missed my chance…"
-    eka_thinking_normal "everyone must've \n think I'm weird…"
+    eka_thinking_normal "everyone must've think I'm weird…"
 
     return
 
 label chapter1_choosing_seat:
     scene 1st_person_depan_kelas
     show screen choose_seat
-    eka_thinking_normal "where should I sit..."
+    if not(is_choose_seat_showed_1st_time):
+        $ is_choose_seat_showed_1st_time = True
+        eka_thinking_normal "where should I sit..."
+    else:
+        placeholder "hmmm"
     jump chapter1_choosing_seat
 
 label chapter1_choosing_seat_simon_scene:
     scene 1st_person_depan_kelas
     show screen choose_seat_simon_scene
-    eka_thinking_normal "where should I sit..."
+    if not(is_choose_seat_showed_1st_time):
+        $ is_choose_seat_showed_1st_time = True
+        eka_thinking_normal "where should I sit..."
+    else:
+        placeholder "hmmm"
     jump chapter1_choosing_seat_simon_scene
 
 label nerdy_scene:
-    scene muka_nerd_shook
     hide screen choose_seat
     hide screen choose_seat_simon_scene
+    scene muka_nerd_shook with fade_to_black
     $ is_nerd_interacted = True
-    eka_talking_normal "um, hello"
+    eka_talking_nerd "um, hello"
 
-    scene muka_nerd_tidak_senang
+    scene muka_nerd_tidak_senang with dissolve
     nerd "…"
-    eka_thinking_normal "Well… doesn't she look \n friendly…"
+    eka_thinking_normal "Well… doesn't she look \nfriendly…"
     menu:
         "Doubt":
-            eka_thinking_normal "well… let's just… find \n another seat…"
+            eka_thinking_normal "well… let's just… find another seat…"
             if not(simon_second):
                 jump chapter1_choosing_seat
             else :
                 jump chapter1_choosing_seat_simon_scene
         "I don't mind":
             eka_thinking_normal "well, maybe it's just me…"
-            eka_thinking_normal "I'm sure she wouldn't \n mind!"
-            eka_talking_normal "Hello… um, do you mind \n if I sit here?"
+            eka_thinking_normal "I'm sure she wouldn't mind!"
+            eka_talking_nerd "Hello… um, do you mind if I sit here?"
 
-            scene muka_nerd_shook_even_more
-            eka_thinking_normal "…well, she certainly looks \n super uncomfortable \n right now… worm."
+            scene muka_nerd_shook_even_more with dissolve
+            eka_thinking_normal "…well, she certainly looks \nsuper uncomfortable right \nnow… worm."
 
-            scene muka_nerd_nunduk
+            scene muka_nerd_nunduk with dissolve
             nerd "Uh… um…"
-            nerd "Actually, I… I already have \n a seatmate, but she's \n sick today so…"
+            nerd "Actually, I… I already have a seatmate, but she's sick today \nso…"
             nerd "…yeah, you can't sit here."
 
-            scene muka_nerd_senyum_sopan
+            scene muka_nerd_senyum_sopan with dissolve
             nerd "I'm really sorry!"
-            eka_talking_normal "U-uh, it's okay, really!"
-            eka_talking_normal "Sorry for bothering you!"
+            eka_talking_nerd "U-uh, it's okay, really!"
+            eka_talking_nerd "Sorry for bothering you!"
             eka_thinking_normal "(sigh) crap…"
             if not(simon_second):
                 jump chapter1_choosing_seat
@@ -315,16 +367,17 @@ label nerdy_scene:
     jump nerdy_scene
 
 label bully_scene:
-    scene muka_bully_seram
     hide screen choose_seat
     hide screen choose_seat_simon_scene
-    eka_talking_normal "…"
+    scene muka_bully_seram with fade_to_black
+    $ is_bully_interacted = True
+    eka_talking_bully "…"
     bully "…"
-    eka_talking_normal "…"
+    eka_talking_bully "…"
 
-    scene muka_bully_makin_melototin
+    scene muka_bully_makin_melototin with dissolve
     bully "…"
-    eka_talking_normal "Uh, I'm- I'm sorry…"
+    eka_talking_bully "Uh, I'm- I'm sorry…"
     eka_thinking_normal "WHAT AM I THINKING…"
 
     if not(simon_second):
@@ -333,43 +386,45 @@ label bully_scene:
         jump chapter1_choosing_seat_simon_scene
 
 label simon_scene:
-    scene simon_ngeliatin
     hide screen choose_seat
-    eka_talking_normal "Hello…"
-    simon_unknown "oh, hello! You wanna sit \n here?"
+    hide screen choose_seat_simon_scene
+    scene simon_ngeliatin with fade_to_black
+    eka_talking_simon "Hello…"
+    simon_unknown "oh, hello! You wanna sit here?"
     menu:
         "Look around":
             $ simon_second = True
             jump chapter1_choosing_seat_simon_scene
         "Sure":
-            scene choosing_seat_simon_senyum
-            eka_talking_normal "yeah… hehe…"
-            eka_talking_normal "This seat is empty, right?"
-            simon_unknown "yep! My seatmate move \n to the front, tsk tsk, \n she abandoned me…"
+            scene choosing_seat_simon_senyum with dissolve
+            eka_talking_simon "yeah… hehe…"
+            eka_talking_simon "This seat is empty, right?"
+            simon_unknown "yep! My seatmate move to \nthe front, tsk tsk, she \nabandoned me…"
 
-            scene simon_pura2_sedih
+            scene simon_pura2_sedih with dissolve
             simon_unknown "sigh…"
 
-            scene simon_nyengir
-            simon_unknown "anyway, yes feel free to \n sit here!"
-            eka_talking_normal "O-oh, well then, I will \n sit here!"
-            simon "Yes, totally! By the way, \n my name's Simon."
-            eka_talking_normal "Ah, nice meeting you \n Simon!"
+            scene simon_nyengir with dissolve
+            simon_unknown "anyway, yes feel free to sit \nhere!"
+            eka_talking_simon "O-oh, well then, I will sit here!"
+            simon "Yes, totally! By the way, my name's Simon."
+            eka_talking_simon "Ah, nice meeting you Simon!"
             jump seated_down
 
     jump simon_scene
 
 label simon_scene_second:
-    scene simon_nyengir
+    hide screen choose_seat
     hide screen choose_seat_simon_scene
-    simon_unknown "Just sit here, I don't mind,  \n really!"
-    eka_talking_normal "ah, thank you so much!"
-    simon "Yes, totally! By the way, \n my name's Simon."
-    eka_talking_normal "Ah, nice meeting you \n Simon!"
+    scene simon_nyengir with fade_to_black
+    simon_unknown "Just sit here, I don't mind, \nreally!"
+    eka_talking_simon "ah, thank you so much!"
+    simon "Yes, totally! By the way, my name's Simon."
+    eka_talking_simon "Ah, nice meeting you Simon!"
     jump seated_down
 
 label seated_down:
-    scene guru_beres_buku
+    scene guru_beres_buku with fade_to_black
     eka_thinking_normal "sigh…"
     eka_thinking_normal "well, not a bad start"
     eka_thinking_normal "certainly CAN go worse…"
@@ -379,198 +434,198 @@ label seated_down:
 label seated_down_interaction_scene:
     scene guru_beres_buku
     show screen seated_down_interaction
-    eka_thinking_normal "hmmm..."
+    placeholder "hmmm..."
     jump seated_down_interaction_scene
 
 label seated_down_simon_convo:
+    hide screen seated_down_interaction
     if not(is_convo_simon_seated_down):
         $ point += 5
         $ is_convo_simon_seated_down = True
         $ whiteboard_interaction_point += 1
-    scene simon_normal
-    hide screen seated_down_interaction
-    eka_talking_normal "um…"
+    scene simon_normal with fade_to_black
+    eka_talking_seated_down "um…"
 
-    scene simon_ngeliat_player
+    scene simon_ngeliat_player with dissolve
     simon "yeah?"
     menu:
         "About school":
-            eka_talking_normal "so… um…"
-            eka_talking_normal "do you like… going to this \n school?"
+            eka_talking_seated_down "so… um…"
+            eka_talking_seated_down "do you like… going to this \nschool?"
 
-            scene simon_surprised
-            eka_thinking_normal "oh- oh, is that a weird \n question-"
-            eka_talking_normal "Um- wait, neverm-"
+            scene simon_surprised with dissolve
+            eka_thinking_normal "oh- oh, is that a weird \nquestion-"
+            eka_talking_seated_down "Um- wait, neverm-"
 
-            scene seated_down_simon_senyum
-            simon "it's great, I think, going to \n this school."
-            simon "I mean, I might be biased, \n all of my siblings \n also go to this school, so…"
-            simon "but! The canteen food is \n nice, the library is \n awesome, and overall \n it's a great school!"
-            eka_talking_normal "Ah, I see.."
-            eka_thinking_normal "…is this the part where \n I ask to-"
-            simon "I can show you around, \n after school?"
-            eka_talking_normal "!!!"
-            eka_talking_normal "Uh, yes, yes that's \n awesome! Wow!"
+            scene seated_down_simon_senyum with dissolve
+            simon "it's great, I think, going to this school."
+            simon "I mean, I might be biased, \nall of my siblings also go to this school, so…"
+            simon "but! The canteen food is nice, \nthe library is awesome, and \noverall it's a great school!"
+            eka_talking_seated_down "Ah, I see.."
+            eka_thinking_normal "…is this the part where \nI ask to-"
+            simon "I can show you around, after school?"
+            eka_talking_seated_down "!!!"
+            eka_talking_seated_down "Uh, yes, yes that's awesome! Wow!"
             eka_thinking_normal "…"
-            eka_thinking_normal "WHY DID I SAY WOW… \n I WANT TO BURY MYSELF UNDERGROUND…"
+            eka_thinking_normal "WHY DID I SAY WOW… I WANT TO BURY MYSELF UNDERGROUND…"
             jump seated_down_interaction_scene
 
         "About seatmate":
-            scene simon_ngeliat_player
-            eka_talking_normal "so… um…"
-            eka_talking_normal "which one is your former \n seatmate?"
+            scene simon_ngeliat_player with dissolve
+            eka_talking_seated_down "so… um…"
+            eka_talking_seated_down "which one is your former seatmate?"
 
-            scene simon_surprised
-            eka_thinking_normal "oh- oh, is that a weird \n question-"
+            scene simon_surprised with dissolve
+            eka_thinking_normal "oh- oh, is that a weird \nquestion-"
 
-            scene simon_senyum_nunjuk_depan
+            scene simon_senyum_nunjuk_depan with dissolve
             if is_nerd_interacted:
-                simon "well, funny you said it, \n she's actually the one \n you talked to earlier, \n the girl with glasses?"
+                simon "well, funny you said it, she's actually the one you talked to earlier, the girl with glasses?"
             else:
-                simon "well, she's the one with \n the glasses, seated at \n front."
-                eka_talking_normal "Oh- um… why did she \n move?"
+                simon "well, she's the one with the glasses, seated at front."
+                eka_talking_seated_down "Oh- um… why did she move?"
                 simon "that, I don't really know."
-                simon "probably thinking we're \n too loud, anyway."
+                simon "probably thinking we're too \nloud, anyway."
                 eka_thinking_normal "We?"
 
             jump seated_down_interaction_scene
 
 label notebook_bag_scene:
+    hide screen seated_down_interaction
     if not(is_bag_interacted):
         $ is_bag_interacted = True
         $ whiteboard_interaction_point += 1
-    scene hand_into_bag
-    hide screen seated_down_interaction
-    eka_thinking_normal "now that I'm seated, \n where's my notebook…"
+    scene seated_down_hand_into_bag with dissolve
+    eka_thinking_normal "now that I'm seated, where's \nmy notebook…"
     eka_thinking_normal "…"
     eka_thinking_normal "…"
-    eka_thinking_normal "well, it should be HERE… \n but… but…"
+    eka_thinking_normal "well, it should be HERE… but… but…"
     eka_thinking_normal "…"
-    eka_thinking_shaking "I didn't bring my notebook… \n Oh my god… I want to… \n Ugh…" with hpunch
+    eka_thinking_shaking "I didn't bring my notebook… \nOh my god… I want to… \nUgh…" with hpunch
     eka_thinking_shaking "…" with hpunch
-    eka_thinking_shaking "…no, no, I remember \n putting it inside the bag…" with hpunch
+    eka_thinking_shaking "…no, no, I remember putting \nit inside the bag…" with hpunch
     eka_thinking_shaking "Ah, crap where is it…" with hpunch
     eka_thinking_normal "!!!"
     eka_thinking_normal "I BRING IT!!!"
-    simon "you okay?"
-    eka_talking_normal "Ah- um-"
+    simon_not_seen "you okay?"
+    eka_talking_seated_down "Ah- um-"
 
-    scene seated_down_simon_senyum
-    eka_talking_normal "it's fine, I thought I didn't \n bring my notebook…"
+    scene seated_down_simon_senyum with fade_to_black
+    eka_talking_seated_down "it's fine, I thought I didn't \nbring my notebook…"
 
-    scene seated_down_simon_concerned
-    simon "Oof, lucky you. Usually \n Mr. Budi is pretty strict \n with notes and books, \n sooo…"
-    eka_thinking_normal "I almost die at my first day \n of school... Great."
-    eka_talking_normal "oh, well…"
+    scene seated_down_simon_concerned with dissolve
+    simon "Oof, lucky you. Usually Mr. \nBudi is pretty strict with notes \nand books, sooo…"
+    eka_thinking_normal "I almost die at my first day of school... Great."
+    eka_talking_seated_down "oh, well…"
     simon "…"
     jump seated_down_interaction_scene
 
 label whiteboard_scene:
     if whiteboard_interaction_point < 2:
-        eka_thinking_normal "Hmmm...I should know more \n about school and check \n my notebook first"
+        eka_thinking_normal "Hmmm...I should know more about school and check my notebook first"
         jump seated_down_interaction_scene
     else:
-        scene guru_depan_papan_tulis
+        scene guru_depan_papan_tulis with dissolve
         hide screen seated_down_interaction
-        budi "Okay, now that everyone \n and everything's settled, \n let's start with the \n lesson!"
+        budi_depan_papan_tulis "Okay, now that everyone and everything's settled, let's start with the lesson!"
         kelas "groans…"
-        budi "Now, now, everyone bring \n out your pen and paper.."
+        budi_depan_papan_tulis "Now, now, everyone bring out your pen and paper.."
         kelas "(disaproving noises)"
-        budi  "Just kidding! Hahah, I gotta \n go, actually… to deal with \n stuffs, so instead I shoud \n give you guys assignment \n to do."
-        budi "But anyway, since this is the \n first day as well, I will let \n you guys off without \n assignment! Anyway, behave \n well, okay!"
-        kelas "yeah!" (multiple = 4)
-        kelas1 "wow, thank you so much, \n sir!" (multiple = 4)
-        kelas2 "we will!" (multiple = 4)
-        kelas3 "yeehaw!" (multiple = 4)
-        budi "well then, I should go now. \n Remember, don't cause \n ruckus or you will get in \n trouble!"
-        kelas3 "no worries sir!"
+        budi_depan_papan_tulis  "Just kidding! Hahah, I gotta go, actually… to deal with stuffs, so instead I shoud give you guys assignment to do."
+        budi_depan_papan_tulis "But anyway, since this is the \nfirst day as well, I will let you \nguys off without assignment! Anyway, behave well, okay!"
+        kelas "yeah!"
+        kelas "wow, thank you so much, sir!"
+        kelas "we will!"
+        kelas "yeehaw!"
+        budi_depan_papan_tulis "well then, I should go now. Remember, don't cause ruckus \nor you will get in trouble!"
+        kelas "no worries sir!"
         jump andrea_nando_scene
 
 label andrea_nando_scene:
-    scene andrea_nando_normal
-    andrea_unknown "hey, y'all wanna go to the \n canteen?"
-    nando_unknown "isn't it too soon to be \n hungry?"
-    andrea_unknown "well, it's better than doing \n nothing in here. Mr. Budi \n said nothing about \n going to the canteen."
-    simon_andrea_nando "well, I don't see anything \n wrong with that, actually."
+    scene andrea_nando_normal with fade_to_black
+    andrea_unknown "hey, y'all wanna go to the canteen?"
+    nando_unknown "isn't it too soon to be hungry?"
+    andrea_unknown "well, it's better than doing \nnothing in here. Mr. Budi said nothing about going to the canteen."
+    simon_andrea_nando "well, I don't see anything wrong with that, actually."
 
-    scene andrea_shrugging
-    nando_unknown "Well now it's two to one, \n I guess I gotta join."
+    scene andrea_shrugging with dissolve
+    nando_unknown "Well now it's two to one, \nI guess I gotta join."
 
-    scene andrea_nyengir
-    andrea_unknown "YO! Well then, it's \n settled, let's go!"
+    scene andrea_nyengir with dissolve
+    andrea_unknown "YO! Well then, it's settled, \nlet's go!"
 
-    scene andrea_nengok_player
+    scene andrea_nengok_player with dissolve
     andrea_unknown "oh, feel free to join us!"
-    eka_talking_normal "M-me?"
-    eka_talking_normal "To the canteen?"
+    eka_andrea_nando "M-me?"
+    eka_andrea_nando "To the canteen?"
     simon_andrea_nando "Yeah, why not?"
-    andrea "anyway, my name's \n Andrea, just remembered \n we haven't told \n our names yet!"
+    andrea "anyway, my name's Andrea, \njust remembered we haven't \ntold our names yet!"
     nando "Ah- yes!"
 
-    scene nando_nyengir
-    nando "I'm Nando, nice to meet \n you, hehe."
-    eka_talking_normal "Oh, um, same goes! \n Hehe..."
+    scene nando_nyengir with dissolve
+    nando "I'm Nando, nice to meet you, hehe."
+    eka_andrea_nando "Oh, um, same goes! Hehe..."
     eka_thinking_normal "keep smiling… keep smiling…"
     andrea "So, you wanna join?"
-    nando "It's better tho, than being \n here doing absolutely \n nothing."
-    eka_talking_normal "Uh… um..."
+    nando "It's better tho, than being here doing absolutely nothing."
+    eka_andrea_nando "Uh… um..."
 
     menu:
         "Think":
-            eka_thinking_normal "Well… I can't guarantee \n I won't be awkward…"
+            eka_thinking_normal "Well… I can't guarantee \nI won't be awkward…"
             menu:
                 "Think":
-                    eka_thinking_normal "And… what if I only \n become a burden…"
+                    eka_thinking_normal "And… what if I only become a burden…"
                     menu:
                         "Think":
                             eka_thinking_normal "What if… i-"
-                            simon_andrea_nando "Eka? Um, something's in \n your mind?"
-                            eka_talking_normal "Ah- eee not really, haha-"
-                            andrea "Chiiill, it's free period, \n it's not a crime to go to the \n canteen in a free period."
+                            simon_andrea_nando "Eka? Um, something's in your mind?"
+                            eka_andrea_nando "Ah- eee not really, haha-"
+                            andrea "Chiiill, it's free period, it's not a crime to go to the canteen in a \nfree period."
 
-                            scene simon_angkat_alis_nyengir
+                            scene simon_angkat_alis_nyengir with dissolve
                             simon_andrea_nando "Well, she's right. Sooo..?"
-                            eka_thinking_normal "…well, now it's only polite \n if I join, right…"
-                            eka_talking_normal "Okay, then… let's go…?"
+                            eka_thinking_normal "…well, now it's only polite if \nI join, right…"
+                            eka_andrea_nando "Okay, then… let's go…?"
                             nando "great! Let's go!"
                             jump canteen_scene
         "Agree":
             $ point += 5
-            eka_thinking_normal "well, it doesn't hurt to \n try to… join, I guess…"
-            eka_talking_normal "Are you sure it's okay \n for me to join?"
-            andrea "wh- of course it is! Let's \n go then!"
-            eka_talking_normal "O-okay!"
+            eka_thinking_normal "well, it doesn't hurt to try to… \njoin, I guess…"
+            eka_andrea_nando "Are you sure it's okay for me to join?"
+            andrea "wh- of course it is! Let's go \nthen!"
+            eka_andrea_nando "O-okay!"
             jump canteen_scene
     jump andrea_nando_scene
 
 label canteen_scene:
-    scene minus_andrea
+    scene minus_andrea with fade_to_black
     simon_canteen "You didn't order food?"
-    eka_talking_normal "N-nah, I'm too...stuffed \n to order anything…"
-    eka_thinking_normal "the fact I'm too anxious \n to drink or eat anything… \n this sucks…"
-    simon_canteen "Em… how about drink? \n Juice?"
-    eka_talking_normal "um… I'm fine, really, \n thank you…"
+    eka_canteen "N-nah, I'm too...stuffed to \norder anything…"
+    eka_thinking_normal "the fact I'm too anxious to \ndrink or eat anything… this \nsucks…"
+    simon_canteen "Em… how about drink? Juice?"
+    eka_canteen "um… I'm fine, really, thank \nyou…"
     nando_canteen "How about some snacks?"
-    eka_talking_normal "I'm fine, really!"
-    eka_talking_normal "Eh, um…"
-    eka_talking_normal "is that too harsh- I didn't \n mean to…"
+    eka_canteen "I'm fine, really!"
+    eka_canteen "Eh, um…"
+    eka_canteen "is that too harsh- I didn't mean \nto…"
     nando_canteen "well, I'm gonna dig in, then!"
 
-    scene andrea_duduk
-    andrea "oh. My. God."
-    nando_canteen "hwat… munch… what \n happened…"
-    andrea "I saw Billy??"
-    nando_canteen "wh?? (gulp) Really? He's at \n school?"
-    nando_canteen "wow, at first day at school \n too!"
-    andrea "I KNOW RIGHT."
-    simon_canteen "after a whole half \n semester gone? Well, \n good thing he's back on \n track!"
-    eka_talking_normal "…Billy?"
-    nando_canteen "PSH! I'd be surprised if he's \n here for midterms."
-    nando_canteen "he's literally gone half the \n semester! God knows \n where he was."
+    scene andrea_duduk with dissolve
+    andrea_canteen "oh. My. God."
+    nando_canteen "hwat… munch… what \nhappened…"
+    andrea_canteen "I saw Billy??"
+    nando_canteen "wh?? (gulp) Really? He's at \nschool?"
+    nando_canteen "wow, at first day at school too!"
+    andrea_canteen "I KNOW RIGHT."
+    simon_canteen "after a whole half semester \ngone? Well, good thing he's \nback on track!"
+    eka_canteen "…Billy?"
+    nando_canteen "PSH! I'd be surprised if he's \nhere for midterms."
+    nando_canteen "he's literally gone half the semester! God knows where \nhe was."
     eka_thinking_normal "…am I getting ignored…"
-    andrea "Sources say he's going \n to school tho, but he \n doesn't go to class…"
-    nando_canteen "wh-?? What is he doing \n then?"
-    eka_thinking_normal "…I'm curious but they \n really ignored me so I \n will just shut up…"
+    andrea_canteen "Sources say he's going to \nschool tho, but he doesn't go \nto class…"
+    nando_canteen "wh-?? What is he doing then?"
+    eka_thinking_normal "…I'm curious but they really ignored me so I will just \nshut up…"
     eka_thinking_normal "or…"
     menu:
         "Just ask":
@@ -583,43 +638,308 @@ label canteen_scene:
     jump canteen_scene
 
 label canteen_just_ask_scene:
-    eka_talking_normal "Is Billy our classmate..?"
+    eka_canteen "Is Billy our classmate..?"
     eka_thinking_normal "WHEW THERE I ASKED IT."
-    simon_canteen "Eh, no. he's from another \n class."
-    andrea "he's a quiet kid. Too quiet \n even!"
-    andrea "I think he got some \n creepy vibes…"
-    nando_canteen "Yooo, don't say that. Hahah! \n But I gotta say he's weird in \n general, but not on the \n creepy level yet."
-    andrea "YET."
+    simon_canteen "Eh, no. he's from another class."
+    andrea_canteen "he's a quiet kid. Too quiet \neven!"
+    andrea_canteen "I think he got some creepy \nvibes…"
+    nando_canteen "Yooo, don't say that. Hahah! \nBut I gotta say he's weird in general, but not on the creepy level yet."
+    andrea_canteen "YET."
     eka_thinking_normal "Oof…"
-    simon_canteen "Isn't he got bullied..? \n That's why he's not \n going to classes, right?"
-    andrea "well, he looks like a \n bullied person…"
+    simon_canteen "Isn't he got bullied..? That's \nwhy he's not going to classes, right?"
+    andrea_canteen "well, he looks like a bullied person…"
     nando_canteen "he looks fucked up"
-    andrea "oh my god Nando."
-    andrea "but also he's right, he \n does look a bit fucked up…"
-    andrea "but also he worsens it by \n not going to school!"
+    andrea_canteen "oh my god Nando."
+    andrea_canteen "but also he's right, he does \nlook a bit fucked up…"
+    andrea_canteen "but also he worsens it by not \ngoing to school!"
 
     jump canteen_just_listen_scene
 
 label canteen_just_listen_scene:
-    nando_canteen "…I also heard he refused his \n classmate's help?"
+    nando_canteen "…I also heard he refused his classmate's help?"
     nando_canteen "he really just… ignore them."
-    nando_canteen "or you could say he's quite \n annoyed to be helped, tho."
-    andrea "…wow, people can do \n that?"
+    nando_canteen "or you could say he's quite annoyed to be helped, tho."
+    andrea_canteen "…wow, people can do that?"
 
-    scene nando_surprised
+    scene nando_surprised with dissolve
     nando_canteen "Oh shoot, I see him!"
 
-    scene semua_orang_nengok
+    scene semua_orang_nengok with dissolve
     eka_thinking_normal "Oh??"
 
-    scene eka_balik_badan
-    nando_canteen "Aaand, he goes. Wow he \n really don't waste any time \n at the canteen."
+    scene eka_balik_badan with dissolve
+    nando_canteen "Aaand, he goes. Wow he really don't waste any time at the canteen."
     eka_thinking_normal "I missed the moment! Ah..."
 
-    scene andrea_duduk
-    eka_thinking_normal "Now I only know vague \n description of Billy…"
-    eka_thinking_normal "I can only hope I won't be \n like that…"
-    eka_thinking_normal "well, not that it's possible… \n I will not drive people \n away, won’t I…"
+    scene andrea_duduk with dissolve
+    eka_thinking_normal "Now I only know vague \ndescription of Billy…"
+    eka_thinking_normal "I can only hope I won't be like that…"
+    eka_thinking_normal "well, not that it's possible… \nI will not drive people away, \nwon’t I…"
     eka_thinking_normal "right?"
 
-    jump canteen_just_listen_scene #later replace with jump eka_room
+    jump eka_room #later replace with jump eka_room
+
+label eka_room:
+    scene eka_kasur_megang_hp with fade_to_black
+    eka_talking_normal_room "..."
+    eka_talking_normal_room "sigh..."
+    eka_thinking_normal_room "well, there we go… my \nfirst day at the new school\n…"
+    eka_thinking_normal_room "I don't really know if I \nshould be glad or not…"
+    eka_thinking_normal_room "…I should be, right?"
+    eka_thinking_normal_room "It's not that bad… I think…"
+    scene eka_guling with dissolve
+    eka_talking_normal_room "Ughh… it's okay, you did your best, Eka…"
+    eka_talking_normal_room "…"
+    jump eka_room_select
+
+label eka_room_select:
+    hide screen phone_screen
+    scene eka_hp with dissolve
+    show screen room_interaction
+    if is_door_interacted_day_1 and is_dailynote_interacted_day_1:
+        placeholder "hmmm"
+    else:
+        eka_thinking_normal_room "I'm bored…"
+    jump eka_room_select
+
+label phone_interface:
+    hide screen room_interaction
+    hide screen note_bg
+    hide screen note_bg_static
+    hide screen day_one_note_title
+    hide screen day_one_high_point_seq_1
+    hide screen day_one_high_point_seq_2
+    hide screen day_one_high_point_seq_3
+    hide screen day_one_high_point_seq_4
+    hide screen day_one_high_point_seq_5
+    hide screen day_one_low_point_seq_1
+    hide screen day_one_low_point_seq_2
+    hide screen day_one_low_point_seq_3
+    hide screen day_one_low_point_seq_4
+    hide screen day_one_low_point_seq_5
+    hide screen day_one_low_point_seq_6
+
+    hide screen chatnow_screen
+    hide screen todolist_screen
+    hide screen browser_screen
+    hide screen music_screen
+
+    show screen phone_screen
+    if is_dailynote_interacted_day_1 and is_chatnow_interacted_day_1 and is_todolist_interacted_day_1 and is_browser_interacted_day_1:
+        eka_thinking_normal "Well then, I guess I have no \nother thing to do in this \nphone…"
+        eka_thinking_normal "…or do i…."
+        eka_thinking_normal "…no no, I didn't."
+        eka_thinking_normal "Okay then, let's go back."
+
+    placeholder "Published@2020"
+    jump phone_interface
+
+image day_one_low_point_seq_1_0 = Text("exhausted..and out of place",color="#000000",size=40,xalign=0.2,yalign=0.2)
+label daily_note_interface:
+    hide screen phone_screen
+    if not(is_dailynote_interacted_day_1):
+        show screen note_bg
+        placeholder "Published@2020"
+        show screen day_one_note_title
+        placeholder "Published@2020"
+        if point < 15:
+            $ is_dailynote_interacted_day_1 = True
+            show screen day_one_low_point_seq_1
+            placeholder "Published@2020"
+            show screen day_one_low_point_seq_2
+            placeholder "Published@2020"
+            show screen day_one_low_point_seq_3
+            placeholder "Published@2020"
+            show screen day_one_low_point_seq_4
+            placeholder "Published@2020"
+            show screen day_one_low_point_seq_5
+            placeholder "Published@2020"
+            show screen day_one_low_point_seq_6
+            placeholder "Published@2020"
+        else:
+            $ is_dailynote_interacted_day_1 = True
+            show screen day_one_high_point_seq_1
+            placeholder "Published@2020"
+            show screen day_one_high_point_seq_2
+            placeholder "Published@2020"
+            show screen day_one_high_point_seq_3
+            placeholder "Published@2020"
+            show screen day_one_high_point_seq_4
+            placeholder "Published@2020"
+            show screen day_one_high_point_seq_5
+            placeholder "Published@2020"
+    else:
+        hide screen note_bg
+        show screen note_bg_static
+        show screen day_one_note_title
+        if point < 15:
+            hide screen day_one_low_point_seq_1
+            hide screen day_one_low_point_seq_2
+            hide screen day_one_low_point_seq_3
+            hide screen day_one_low_point_seq_4
+            hide screen day_one_low_point_seq_5
+            hide screen day_one_low_point_seq_6
+            show screen day_one_low_point_seq_1
+            show screen day_one_low_point_seq_2
+            show screen day_one_low_point_seq_3
+            show screen day_one_low_point_seq_4
+            show screen day_one_low_point_seq_5
+            show screen day_one_low_point_seq_6
+        else:
+            hide screen day_one_high_point_seq_1
+            hide screen day_one_high_point_seq_2
+            hide screen day_one_high_point_seq_3
+            hide screen day_one_high_point_seq_4
+            hide screen day_one_high_point_seq_5
+            show screen day_one_high_point_seq_1
+            show screen day_one_high_point_seq_2
+            show screen day_one_high_point_seq_3
+            show screen day_one_high_point_seq_4
+            show screen day_one_high_point_seq_5
+        placeholder "Published@2020"
+    jump daily_note_interface
+
+label inactive_note:
+    hide screen note_bg
+    show screen note_bg_static
+    show screen day_one_note_title
+    if point < 15:
+        hide screen day_one_low_point_seq_1
+        hide screen day_one_low_point_seq_2
+        hide screen day_one_low_point_seq_3
+        hide screen day_one_low_point_seq_4
+        hide screen day_one_low_point_seq_5
+        hide screen day_one_low_point_seq_6
+        show screen day_one_low_point_seq_1
+        show screen day_one_low_point_seq_2
+        show screen day_one_low_point_seq_3
+        show screen day_one_low_point_seq_4
+        show screen day_one_low_point_seq_5
+        show screen day_one_low_point_seq_6
+    else:
+        hide screen day_one_high_point_seq_1
+        hide screen day_one_high_point_seq_2
+        hide screen day_one_high_point_seq_3
+        hide screen day_one_high_point_seq_4
+        hide screen day_one_high_point_seq_5
+        show screen day_one_high_point_seq_1
+        show screen day_one_high_point_seq_2
+        show screen day_one_high_point_seq_3
+        show screen day_one_high_point_seq_4
+        show screen day_one_high_point_seq_5
+    eka_thinking_normal "W-what am I doing here again"
+    eka_thinking_normal "I already write today's entry"
+    eka_thinking_normal "I'm sleepy tho…"
+    jump phone_interface
+
+label chatnow_interface:
+    hide screen phone_screen
+    show screen chatnow_screen
+    $ is_chatnow_interacted_day_1 = True
+    eka_thinking_normal "…I don't have any new chats."
+    jump phone_interface
+
+label todolist_interface:
+    hide screen phone_screen
+    show screen todolist_screen
+    $ is_todolist_interacted_day_1 = True
+    eka_thinking_normal "wow good as new."
+    eka_thinking_normal "I don't have any new to do \nlist…"
+    eka_thinking_normal "But maybe I should start \nputting homework list here…"
+    eka_thinking_normal "Oh well, as long as we don't \nhave any homeworks…"
+    jump phone_interface
+
+label browser_interface:
+    hide screen phone_screen
+    show screen browser_screen
+    $ is_browser_interacted_day_1  = True
+    if is_dailynote_interacted_day_1:
+        eka_thinking_normal "I'm actually already sleepy..."
+        eka_thinking_normal "maybe later when I need something to search on the internet?"
+    else:
+        eka_thinking_normal "I don't feel like browsing internet..."
+        eka_thinking_normal "maybe later when I need something to search on the internet?"
+        eka_thinking_normal "I do feel like I have to do something on my phone tho…."
+    jump phone_interface
+
+label phone_interface_with_music:
+    hide screen room_interaction
+    hide screen note_bg
+    hide screen note_bg_static
+    hide screen day_one_note_title
+    hide screen day_one_high_point_seq_1
+    hide screen day_one_high_point_seq_2
+    hide screen day_one_high_point_seq_3
+    hide screen day_one_high_point_seq_4
+    hide screen day_one_high_point_seq_5
+    hide screen day_one_low_point_seq_1
+    hide screen day_one_low_point_seq_2
+    hide screen day_one_low_point_seq_3
+    hide screen day_one_low_point_seq_4
+    hide screen day_one_low_point_seq_5
+    hide screen day_one_low_point_seq_6
+
+    hide screen chatnow_screen
+    hide screen todolist_screen
+    hide screen browser_screen
+
+    hide screen phone_screen
+    show screen music_screen
+    placeholder "hmmm"
+    jump phone_interface_with_music
+
+label door_option:
+    $ is_door_interacted_day_1 = True
+    menu:
+        "Grab water":
+            jump grab_water
+
+        "Wash face":
+            jump wash_face
+
+label grab_water:
+    hide screen room_interaction
+    scene eka_deket_dispenser with fade_to_black
+    eka_thinking_normal "I didn't realize I was thirsty… \ngood thing I remember."
+    scene eka_minum_air with dissolve
+    eka_thinking_normal "drinking cold water always \nmakes me calmer"
+    scene eka_taro_gelas with dissolve
+    eka_thinking_normal "Well, let's go back to bed \nthen…"
+    jump eka_room_select
+
+label wash_face:
+    hide screen room_interaction
+    scene eka_depan_kaca with fade_to_black
+    eka_thinking_normal "Almost forgot to wash my \nface…"
+    scene eka_splashing_face with dissolve
+    eka_thinking_normal "phew, I'm fresh again… I feel lighter."
+    scene eka_depan_kaca_2 with dissolve
+    eka_thinking_normal "Well, let's go back to bed \nthen…"
+    jump eka_room_select
+
+label light_scene:
+    hide screen room_interaction
+    scene light_switch_on with fade_to_black
+    eka_thinking_normal "the light switch…"
+    if is_dailynote_interacted_day_1:
+        scene light_switch_off with dissolve
+        eka_thinking_normal "Well, let's turn the lights off"
+        jump final_chapter1
+    else:
+        eka_thinking_normal "but I'm not sleepy yet…"
+        jump eka_room_select
+
+label final_chapter1:
+    scene eka_sleep with fade_to_black
+    eka_thinking_normal "alright then… let's go to sleep."
+    eka_thinking_normal "good night…"
+    stop music
+    jump transition_chapter2
+
+label transition_chapter2:
+    $ is_chapter1_played = True
+    $ renpy.movie_cutscene('video/splash-chap-7-JANUARY-1_1.webm')
+    show screen chapter2_splash 
+    placeholder "hmmm"
+    hide screen chapter2_splash
+    return

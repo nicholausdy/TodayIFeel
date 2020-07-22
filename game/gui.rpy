@@ -64,10 +64,10 @@ define gui.name_text_font = "fonts/Nunito-Black.ttf"
 define gui.interface_text_font = "fonts/Nunito-Light.ttf"
 
 ## The size of normal dialogue text.
-define gui.text_size = 30
+define gui.text_size = 40
 
 ## The size of character names.
-define gui.name_text_size = 40
+define gui.name_text_size = 60
 
 ## The size of text in the game's user interface.
 define gui.interface_text_size = 26
@@ -205,12 +205,12 @@ define gui.quick_button_text_selected_color = gui.accent_color
 ##
 ## Choice buttons are used in the in-game menus.
 
-define gui.choice_button_width = 667
-define gui.choice_button_height = None
-define gui.choice_button_tile = False
-define gui.choice_button_borders = Borders(85, 5, 85, 5)
-define gui.choice_button_text_font = gui.text_font
-define gui.choice_button_text_size = gui.text_size
+define gui.choice_button_width = 959
+define gui.choice_button_height = 280
+define gui.choice_button_tile = True
+define gui.choice_button_borders = Borders(20, 95, 20, 20)
+define gui.choice_button_text_font = "fonts/Nunito-Regular.ttf"
+define gui.choice_button_text_size = 200
 define gui.choice_button_text_xalign = 0.5
 define gui.choice_button_text_idle_color = "#cccccc"
 define gui.choice_button_text_hover_color = "#ffffff"

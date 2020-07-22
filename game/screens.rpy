@@ -111,6 +111,22 @@ screen eka_buka_tas_view():
 ################################################################################
 ## In-game screens
 ################################################################################
+image tangan_garuk2_shaking_movie = Movie(play="video/INTRODUCTION-3rd-pov-depan-kelas-tangan-garuk2-SHAKING-FONTS.webm", channel="test")
+image clenching_hand_movie = Movie(play="video/INTRODUCTION-3rd-pov-depan-kelas-clenching-hands-SHAKING-FONT.webm", channel="test")
+screen walk_button():
+    vbox:
+        imagebutton id "walk_button":
+            idle "buttons/walk button.png"
+            hover "buttons/walk button pressed.png"
+            xpos 500
+            ypos 1300
+            action Jump("after_walk")
+
+screen tangan_garuk2_shaking():
+    add "tangan_garuk2_shaking_movie"
+
+screen clenching_hand():
+    add "clenching_hand_movie"
 ## Next button screen ##########################################################
 screen next_button():
     vbox:
@@ -120,76 +136,113 @@ screen next_button():
             xpos 500
             ypos 1700
             action Return()
-#image idle_see_button = "buttons/see button.png"
+image idle_see_button = "buttons/see button.png"
 image hover_see_button = "buttons/see button PRESSED.png"
+image idle_see_button_small = "buttons/see button small.png"
+image hover_see_button_small = "buttons/see button PRESSED small.png"
 ## Choosing seat screen ########################################################
 screen choose_seat():
-    vbox:
-        imagebutton id "friendly_seat":
-            idle "hover_see_button"
-            #hover "hover_see_button"
-            xpos 770
-            ypos 650
-            action Jump("simon_scene")
-
-        imagebutton id "nerdy_seat":
-            idle "hover_see_button"
-            xpos 800
-            ypos 690
-            action Jump("nerdy_scene")
-
+    showif not(is_bully_interacted):
         imagebutton id "bully_seat":
-            idle "hover_see_button"
-            xpos 120
-            ypos 600
+            idle "idle_see_button_small"
+            hover "hover_see_button_small"
+            xpos 560
+            ypos 560
             action Jump("bully_scene")
+
+    imagebutton id "simon_seat":
+        idle "idle_see_button"
+        hover "hover_see_button"
+        xpos 670
+        ypos 630
+        action Jump("simon_scene")
+
+    showif not(is_nerd_interacted):
+        imagebutton id "nerdy_seat":
+            idle "idle_see_button"
+            hover "hover_see_button"
+            xpos 70
+            ypos 630
+            action Jump("nerdy_scene")
 
 
 screen choose_seat_simon_scene():
-    vbox:
-        imagebutton id "friendly_seat":
-            idle "hover_see_button"
-            #hover "hover_see_button"
-            xpos 770
-            ypos 650
-            action Jump("simon_scene_second")
+    showif not(is_bully_interacted):
+        imagebutton id "bully_seat":
+            idle "idle_see_button_small"
+            hover "hover_see_button_small"
+            xpos 560
+            ypos 560
+            action Jump("bully_scene")
 
+    imagebutton id "simon_seat":
+        idle "idle_see_button"
+        hover "hover_see_button"
+        xpos 670
+        ypos 630
+        action Jump("simon_scene_second")
+
+    showif not(is_nerd_interacted):
         imagebutton id "nerdy_seat":
-            idle "hover_see_button"
-            xpos 800
-            ypos 690
+            idle "idle_see_button"
+            hover "hover_see_button"
+            xpos 70
+            ypos 630
             action Jump("nerdy_scene")
 
-        imagebutton id "bully seat":
-            idle "hover_see_button"
-            xpos 120
-            ypos 600
-            action Jump("bully_scene")
-#image idle_poke_right_button = "buttons/poke button.png"
+image idle_poke_right_button = "buttons/poke button.png"
 image hover_poke_right_button = "buttons/poke button PRESSED.png"
+image idle_poke_left_button = "buttons/poke button left.png"
 image hover_poke_left_button = "buttons/poke button left PRESSED.png"
-#image idle_grab_button = "buttons/grab button.png"
+image idle_grab_button = "buttons/grab button.png"
 image hover_grab_button = "buttons/grab button PRESSED.png"
 
 screen seated_down_interaction():
-    vbox:
+    showif not(is_convo_simon_seated_down):
         imagebutton id "poke_simon":
-            idle "hover_poke_left_button"
+            idle "idle_poke_left_button"
+            hover "hover_poke_left_button"
             xpos 100
-            ypos 1500
+            ypos 1400
             action Jump("seated_down_simon_convo")
 
+    showif not(is_bag_interacted):
         imagebutton id "grab_bag":
-            idle "hover_grab_button"
+            idle "idle_grab_button"
+            hover "hover_grab_button"
             xpos 800
             ypos 1500
             action Jump("notebook_bag_scene")
 
-        imagebutton id "see_whiteboard":
-            idle "hover_see_button"
-            xpos 800
-            ypos 300
-            action Jump("whiteboard_scene")
+
+    imagebutton id "see_whiteboard":
+        idle "idle_see_button_small"
+        hover "hover_see_button_small"
+        xpos 800
+        ypos 300
+        action Jump("whiteboard_scene")
+
+screen room_interaction():
+    imagebutton id "light_switch":
+        idle "idle_grab_button"
+        hover "hover_grab_button"
+        xpos 450
+        ypos 400
+        action Jump("light_scene")
+    showif not(is_door_interacted_day_1):
+        imagebutton id "door":
+            idle "idle_grab_button"
+            hover "hover_grab_button"
+            xpos 300
+            ypos 550
+            action Jump("door_option")
+    showif not(is_dailynote_interacted_day_1 and is_chatnow_interacted_day_1 and is_todolist_interacted_day_1 and is_browser_interacted_day_1):
+        imagebutton id "phone":
+            idle "idle_see_button"
+            hover "hover_see_button"
+            xpos 770
+            ypos 1500
+            action Jump("phone_interface")
 
 
 ## Say screen ##################################################################
@@ -318,8 +371,11 @@ screen choice(items):
     vbox:
         for i in items:
             textbutton i.caption action i.action:
-                text_size 40
+                text_size 60
+                at choice_opacity
 
+transform choice_opacity:
+    alpha 0.75
 
 ## When this is true, menu captions will be spoken by the narrator. When false,
 ## menu captions will be displayed as empty buttons.
@@ -328,7 +384,7 @@ define config.narrator_menu = True
 
 style choice_vbox is vbox
 style choice_button is button
-style choice_button_text is button_text
+style choice_button_text is choice_button_text
 
 style choice_vbox:
     xalign 0.5
@@ -393,7 +449,7 @@ screen quick_menu():
 init python:
     config.overlay_screens.append("quick_menu")
 
-default quick_menu = True
+default quick_menu = False
 
 style quick_button is default
 style quick_button_text is button_text
@@ -481,63 +537,97 @@ style main_menu_text_style:
 ## Used to display the main menu when Ren'Py starts.
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
+image splash_screen = Movie(play="video/SPLASH_SCREEN.webm", channel="test")
+image lockbutton = "gui/overlay/lockbutton.png"
+image lockbutton_pressed = "gui/overlay/lockbutton_pressed.png"
+image main_menu_bg = "gui/overlay/main_menu_bg.png"
+
 screen main_menu():
 
     ## This ensures that any other menu screen is replaced.
     tag menu
 
     style_prefix "main_menu"
-
+    add "splash_screen"
+    imagebutton id "start_button":
+        idle "lockbutton"
+        hover "lockbutton_pressed"
+        xpos 575
+        ypos 810
+        action Start("transition")
+    #add "main_menu_bg" xpos 500 ypos 500
     #add gui.main_menu_background
 
     ## This empty frame darkens the main menu.
-    frame:
-        pass
+    #frame:
+    #    pass
 
     ## The use statement includes another screen inside this one. The actual
     ## contents of the main menu are in the navigation screen.
     #use navigation
 
-    if gui.show_name:
+    #if gui.show_name:
 
-        vbox:
-            text "[config.name!t]":
-                style "main_menu_title"
+    #    vbox:
+    #        text "[config.name!t]":
+    #            style "main_menu_title"
 
-            text "[config.version]":
-                style "main_menu_version"
+    #        text "[config.version]":
+    #            style "main_menu_version"
 
-    add "gui/overlay/main_menu_title.png" xalign 0.5 yalign 0.45
+    #add "gui/overlay/main_menu_title.png" xalign 0.5 yalign 0.45
 
-    vbox xalign 0.5 yalign 0.7:
+    #vbox xalign 0.5 yalign 0.7:
+    #    imagebutton id "load_game_button":
+    #        idle "gui/overlay/main_menu_button.png"
+    #        xpos 0
+    #        ypos 240
+    #        xsize 600
+    #        ysize 150
+    #        action ToggleScreen("chapter_selection")
+    #    textbutton "LOAD GAME":
+    #        xpos 160
+    #        text_style "main_menu_text_style"
+            #add this action line to make the button responsive to hover action
+    #        action ToggleScreen("chapter_selection")
+
+    #    imagebutton id "new_game_button":
+    #        idle "gui/overlay/main_menu_button.png"
+    #        xpos 0
+    #        ypos 250
+    #        xsize 600
+    #        ysize 150
+    #        action Start("chapter1")
+    #    textbutton "NEW GAME" :
+    #        xpos 160
+    #        ypos 150
+    #        text_style "main_menu_text_style"
+            #add this action line to make the button responsive to hover action
+    #        action Start("chapter1")
+
+image bg_loop = Movie(play="video/mainmenu_BG_loop.webm", channel="test")
+screen main_menu_select():
+    tag menu
+    add "bg_loop"
+    vbox xalign 0.45 yalign 0.5:
         imagebutton id "load_game_button":
-            idle "gui/overlay/main_menu_button.png"
-            xpos 0
+            idle "gui/overlay/LOAD_GAME_BUTTON.png"
+            hover "gui/overlay/LOAD_GAME_BUTTON_pressed.png"
+            xpos 120
             ypos 240
-            xsize 600
-            ysize 150
             action ToggleScreen("chapter_selection")
-        textbutton "LOAD GAME":
-            xpos 160
-            ypos 140
-            text_style "main_menu_text_style"
-            #add this action line to make the button responsive to hover action
-            action ToggleScreen("chapter_selection")
-
         imagebutton id "new_game_button":
-            idle "gui/overlay/main_menu_button.png"
-            xpos 0
-            ypos 250
-            xsize 600
-            ysize 150
-            action Start("chapter1")
-        textbutton "NEW GAME" :
-            xpos 160
-            ypos 150
-            text_style "main_menu_text_style"
-            #add this action line to make the button responsive to hover action
-            action Start("chapter1")
-
+            idle "gui/overlay/NEW_GAME_BUTTON.png"
+            hover "gui/overlay/NEW_GAME_BUTTON_pressed.png"
+            xpos 120
+            ypos 260
+            action Jump("chapter1")
+        imagebutton id "exit_game_button":
+            idle "gui/overlay/EXIT_GAME_BUTTON.png"
+            hover "gui/overlay/EXIT_GAME_BUTTON_pressed.png"
+            xpos 120
+            ypos 280
+            action Quit(confirm=True)
 
 style chapter_box_day:
     color "#000000"
@@ -574,7 +664,11 @@ screen chapter_selection():
                         xpos 80
                         idle "gui/overlay/chap_select_box.png"
                         hover "gui/overlay/chap_select_box_pressed.png"
-                        action Start("chapter1")
+                        action Jump("chapter1")
+                    showif is_chapter1_played:
+                        image "gui/overlay/chapsel LAST PLAYED CHAPTER.png":
+                            xpos 120
+                            ypos 45
 
                 fixed:
                     xmaximum 914
@@ -632,13 +726,210 @@ screen chapter_selection():
         ypos 70
         xsize 140
         ysize 100
-        action ToggleScreen("main_menu")
+        action ToggleScreen("main_menu_select")
     imagebutton id "back_to_main_menu_button" :
         idle  "gui/overlay/chaps_select_back.png"
         xpos 150
         ypos 120
-        action ToggleScreen("main_menu")
+        action ToggleScreen("main_menu_select")
 
+style phone_hour:
+    color "#FFFFFF"
+    size 140
+    xpos 50
+    ypos 100
+
+style pm:
+    color "#FFFFFF"
+    size 50
+    xpos 90
+    ypos 140
+
+style date:
+    color "#FFFFFF"
+    size 50
+    xpos 15
+    ypos 190
+
+image loop_splash_chap1 = Movie(play="video/splash-chap-6-JANUARY-2-LOOP_1.webm", channel="test")
+image loop_splash_chap2 = Movie(play="video/splash-chap-7-JANUARY-2-LOOP_1.webm", channel="test")
+
+screen chapter1_splash():
+    add "loop_splash_chap1"
+screen chapter2_splash():
+    add "loop_splash_chap2"
+
+screen phone_screen():
+    add "gui/overlay/homephone_BG.jpg"
+    hbox:
+        text "06.52" style "phone_hour"
+        text "PM" style "pm"
+        text "MON, 6 JAN" style "date"
+    hbox:
+        imagebutton id "daily_note":
+            idle "gui/overlay/homephone_dailynote.png"
+            hover "gui/overlay/homephone_dailynote_PRESSED.png"
+            xpos 50
+            ypos 340
+            action If(is_dailynote_interacted_day_1, false=Jump("daily_note_interface"), true=Jump("inactive_note"))
+
+        imagebutton id "chat_now":
+            idle "gui/overlay/homephone_chatnow.png"
+            hover "gui/overlay/homephone_chatnow_PRESSED.png"
+            xpos 120
+            ypos 347
+            action Jump("chatnow_interface")
+
+        imagebutton id "to_do_list":
+            idle "gui/overlay/homephone_todolist.png"
+            hover "gui/overlay/homephone_todolist_PRESSED.png"
+            xpos 190
+            ypos 335
+            action Jump("todolist_interface")
+
+        imagebutton id "browser":
+            idle "gui/overlay/homephone_browser.png"
+            hover "gui/overlay/homephone_browser_PRESSED.png"
+            xpos 260
+            ypos 350
+            action Jump("browser_interface")
+
+    hbox yalign 0.95:
+        imagebutton id "music":
+            idle "gui/overlay/homephone_MUSIC.png"
+            hover "gui/overlay/homephone_MUSIC_PRESSED.png"
+            xpos 50
+            action Jump("phone_interface_with_music")
+
+        imagebutton id "back":
+            idle "gui/overlay/homephone_BACK.png"
+            hover "gui/overlay/homephone_BACK_PRESSED.png"
+            xpos 780
+            action Jump("eka_room_select")
+
+#screen2 nguli bwt note and keyboard
+image keyboard_vid = Movie(play="gui/overlay/keyboard.webm", channel="test")
+screen note_bg():
+    imagebutton:
+        idle "gui/overlay/dailynote_BG.jpg"
+    #add "keyboard_vid" yalign 0.9
+    imagebutton:
+        idle "gui/overlay/KEYBOARD normal.jpg"
+        yalign 0.9
+    hbox yalign 0.05 xalign 0.7:
+        imagebutton:
+            idle "gui/overlay/dailynote_save_NO_PRESS.png"
+            action NullAction()
+    text " {b} Monday, January 6 {/b} " style "date_title"
+    text "Today I feel" style "diary_title"
+screen note_bg_static():
+    imagebutton:
+        idle "gui/overlay/dailynote_BG.jpg"
+    hbox yalign 0.05 xalign 0.7:
+        imagebutton:
+            idle "gui/overlay/dailynote_save.png"
+            action Jump("phone_interface")
+    text " {b} Monday, January 6 {/b} " style "date_title"
+    text "Today I feel" style "diary_title"
+
+style date_title:
+    color "#000000"
+    size 40
+    xpos 50
+    ypos 250
+style diary_title:
+    color "#000000"
+    size 40
+    xpos 77
+    ypos 320
+style seq_1:
+    color "#000000"
+    size 40
+    xpos 300
+    ypos 320
+style seq_2:
+    color "#000000"
+    size 40
+    xpos 620
+    ypos 320
+style seq_3:
+    color "#000000"
+    size 40
+    xpos 77
+    ypos 380
+style seq_4:
+    color "#000000"
+    size 40
+    xpos 77
+    ypos 440
+style seq_5:
+    color "#000000"
+    size 40
+    xpos 77
+    ypos 500
+
+style low_seq_2:
+    color "#000000"
+    size 40
+    xpos 77
+    ypos 380
+style low_seq_3:
+    color "#000000"
+    size 40
+    xpos 670
+    ypos 380
+style low_seq_4:
+    color "#000000"
+    size 40
+    xpos 77
+    ypos 440
+style low_seq_5:
+    color "#000000"
+    size 40
+    xpos 530
+    ypos 440
+style low_seq_6:
+    color "#000000"
+    size 40
+    xpos 77
+    ypos 500
+
+
+screen day_one_note_title():
+    text " {b} Monday, January 6 {/b} " style "date_title"
+    text "Today I feel" style "diary_title"
+screen day_one_low_point_seq_1():
+    text "{cps=2}exhausted..and out of place.{/cps}" style "seq_1"
+screen day_one_low_point_seq_2():
+    text "First day of school is not really..." style "low_seq_2"
+screen day_one_low_point_seq_3():
+    text "great" style "low_seq_3"
+screen day_one_low_point_seq_4():
+    text "I feel like I can do better," style "low_seq_4"
+screen day_one_low_point_seq_5():
+    text "especially in socialising…." style "low_seq_5"
+screen day_one_low_point_seq_6():
+    text "I hope I can do better in the future, and not worry so \n much." style "low_seq_6"
+    hbox yalign 0.05 xalign 0.7:
+        imagebutton:
+            idle "gui/overlay/dailynote_save.png"
+            action Jump("phone_interface")
+
+
+screen day_one_high_point_seq_1():
+    text "{cps=2}strangely relieved.{/cps}" style "seq_1"
+screen day_one_high_point_seq_2():
+    text " Or not strange after all." style "seq_2"
+screen day_one_high_point_seq_3():
+    text "I'm exhausted, but I'm glad I can make several friends." style "seq_3"
+screen day_one_high_point_seq_4():
+    text "I hope I can stay friends with them." style "seq_4"
+screen day_one_high_point_seq_5():
+    text "And also… for me to not worry too much." style "seq_5"
+    hbox yalign 0.05 xalign 0.7:
+        imagebutton:
+            idle "gui/overlay/dailynote_save.png"
+            action Jump("phone_interface")
 
     #button id "start_chapter_1":
     #    xalign 0.5
@@ -646,6 +937,78 @@ screen chapter_selection():
     #    xsize 600
     #    ysize 150
     #    action Start("chapter1")
+
+style chat_title:
+    color "#ffffff"
+    size 50
+    xpos 450
+    ypos 100
+style chat_list_mom:
+    color "#000000"
+    size 40
+    xpos 65
+    ypos 270
+style chat_list_dad:
+    color "#000000"
+    size 40
+    xpos 65
+    ypos 320
+
+screen chatnow_screen:
+    imagebutton:
+        idle "gui/overlay/chatnow_BG.jpg"
+    text "Chats" style "chat_title"
+    vbox:
+        hbox:
+            imagebutton:
+                idle "gui/overlay/PP_MOM.png"
+                xpos 30
+                ypos 250
+            text "MOM" style "chat_list_mom"
+        hbox:
+            imagebutton:
+                idle "gui/overlay/PP_DAD.png"
+                xpos 30
+                ypos 300
+            text "DAD" style "chat_list_dad"
+
+screen todolist_screen:
+    imagebutton:
+        idle "gui/overlay/layout to do list.jpg"
+
+screen browser_screen:
+    imagebutton:
+        idle "gui/overlay/LAYOUT browser.jpg"
+
+screen music_screen:
+    imagebutton:
+        idle "gui/overlay/bg MUSIC PLAYER.png"
+    imagebutton:
+        idle "gui/overlay/MUSIC PLAYER back button.png"
+        xpos 950
+        ypos 120
+        action Jump("phone_interface")
+    vbox yalign 0.45 xalign 0.1:
+        imagebutton:
+            idle "gui/overlay/MUSIC PLAYER JAZZ BUTTON.png"
+            hover "gui/overlay/MUSIC PLAYER JAZZ BUTTON selected.png"
+            ypos 60
+            action Play("music",["audio/jazz music 1.mp3","audio/jazz music 2.mp3"])
+        imagebutton:
+            idle "gui/overlay/MUSIC PLAYER ROCK BUTTON.png"
+            hover "gui/overlay/MUSIC PLAYER ROCK BUTTON selected.png"
+            ypos 90
+            action Play("music",["audio/rock music 1.mp3","audio/rock music 2.mp3"])
+        imagebutton:
+            idle "gui/overlay/MUSIC PLAYER POP BUTTON.png"
+            hover "gui/overlay/MUSIC PLAYER POP BUTTON selected.png"
+            ypos 120
+            action Play("music",["audio/pop music 1.mp3","audio/pop music 2.mp3"])
+        imagebutton:
+            idle "gui/overlay/MUSIC PLAYER LO-FI BUTTON.png"
+            hover "gui/overlay/MUSIC PLAYER LO-FI BUTTON selected.png"
+            ypos 150
+            action Play("music",["audio/lofi music 1.mp3","audio/lofi music 2.mp3"])
 
 
 #template default
@@ -660,7 +1023,7 @@ style main_menu_frame:
     xsize 237
     yfill True
     #edit here to change main menu background image
-    background "gui/overlay/main_menu_bg.png"
+    #background "gui/overlay/main_menu_bg.png"
 
 style main_menu_vbox:
     xalign 1.0
